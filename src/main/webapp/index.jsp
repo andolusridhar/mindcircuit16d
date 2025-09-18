@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sridhar - DevOps Professional</title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <title>DevOps Terminal - Sridhar</title>
     <style>
         * {
             margin: 0;
@@ -13,526 +12,839 @@
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%);
-            color: #ffffff;
+            font-family: 'Courier New', monospace;
+            background: linear-gradient(135deg, #0c0c0c 0%, #1a1a2e 50%, #16213e 100%);
+            color: #00ff88;
             overflow-x: hidden;
-            line-height: 1.6;
+            min-height: 100vh;
+            position: relative;
         }
 
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 0 20px;
+        /* Animated Background Stars */
+        .stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .star {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: #00ff88;
+            border-radius: 50%;
+            animation: twinkle 3s infinite;
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.3; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.5); }
         }
 
         /* Header */
-        .header {
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            backdrop-filter: blur(10px);
+            border-bottom: 2px solid #00ff88;
+            z-index: 1000;
+            animation: slideDown 1s ease-out;
+        }
+
+        @keyframes slideDown {
+            from { transform: translateY(-100%); }
+            to { transform: translateY(0); }
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #00ff88;
+            text-shadow: 0 0 10px #00ff88;
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes glow {
+            from { text-shadow: 0 0 10px #00ff88; }
+            to { text-shadow: 0 0 20px #00ff88, 0 0 30px #00ff88; }
+        }
+
+        .sridhar-name {
+            font-size: 1rem;
+            color: #ffd700;
+            font-weight: 600;
+            text-shadow: 0 0 15px #ffd700;
+            animation: pulseGold 2s ease-in-out infinite;
+        }
+
+        @keyframes pulseGold {
+            0%, 100% { opacity: 0.8; }
+            50% { opacity: 1; }
+        }
+
+        /* Main Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
             position: relative;
+            z-index: 10;
+        }
+
+        /* Terminal Section */
+        .terminal-section {
             min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
+            padding: 100px 0;
+        }
+
+        .terminal-content {
             text-align: center;
-            background: radial-gradient(ellipse at center, rgba(64, 224, 208, 0.1) 0%, transparent 50%);
-        }
-
-        .floating-particles {
-            position: absolute;
             width: 100%;
-            height: 100%;
-            overflow: hidden;
-            z-index: 1;
+            max-width: 800px;
         }
 
-        .particle {
-            position: absolute;
-            background: #40e0d0;
-            border-radius: 50%;
-            opacity: 0.6;
-            animation: float 6s infinite ease-in-out;
-        }
-
-        .particle:nth-child(1) { width: 4px; height: 4px; left: 10%; animation-delay: 0s; }
-        .particle:nth-child(2) { width: 6px; height: 6px; left: 20%; animation-delay: 1s; }
-        .particle:nth-child(3) { width: 3px; height: 3px; left: 30%; animation-delay: 2s; }
-        .particle:nth-child(4) { width: 5px; height: 5px; left: 40%; animation-delay: 3s; }
-        .particle:nth-child(5) { width: 4px; height: 4px; left: 50%; animation-delay: 4s; }
-        .particle:nth-child(6) { width: 6px; height: 6px; left: 60%; animation-delay: 5s; }
-        .particle:nth-child(7) { width: 3px; height: 3px; left: 70%; animation-delay: 0.5s; }
-        .particle:nth-child(8) { width: 5px; height: 5px; left: 80%; animation-delay: 1.5s; }
-        .particle:nth-child(9) { width: 4px; height: 4px; left: 90%; animation-delay: 2.5s; }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
-            10% { opacity: 0.6; }
-            90% { opacity: 0.6; }
-            50% { transform: translateY(-100px) rotate(180deg); opacity: 1; }
-        }
-
-        .hero-content {
-            position: relative;
-            z-index: 2;
-        }
-
-        .name-title {
-            font-size: 5rem;
-            font-weight: 700;
-            background: linear-gradient(135deg, #40e0d0, #00d4ff, #0099ff);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+        .greeting {
+            font-size: 3.5rem;
             margin-bottom: 1rem;
-            text-shadow: 0 0 30px rgba(64, 224, 208, 0.3);
-            animation: glow 3s ease-in-out infinite alternate;
+            color: #00ff88;
+            animation: typeIn 2s ease-out;
+            text-shadow: 0 0 20px #00ff88;
         }
 
-        @keyframes glow {
-            from { filter: drop-shadow(0 0 20px rgba(64, 224, 208, 0.3)); }
-            to { filter: drop-shadow(0 0 40px rgba(64, 224, 208, 0.6)); }
+        .welcome-text {
+            font-size: 2rem;
+            margin-bottom: 2rem;
+            color: #88ccff;
+            animation: typeIn 2s ease-out 0.5s both;
+            text-shadow: 0 0 15px #88ccff;
         }
 
         .subtitle {
-            font-size: 1.8rem;
-            color: #b3b3cc;
-            margin-bottom: 2rem;
-            animation: slideUp 1s ease-out 0.5s both;
-        }
-
-        .tagline {
             font-size: 1.2rem;
-            color: #40e0d0;
             margin-bottom: 3rem;
-            animation: slideUp 1s ease-out 1s both;
+            color: #ffaa44;
+            animation: typeIn 2s ease-out 1s both;
         }
 
-        @keyframes slideUp {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
+        @keyframes typeIn {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
-        /* DevOps Skills Grid */
-        .skills-section {
-            padding: 100px 0;
-            background: rgba(255, 255, 255, 0.02);
+        /* Terminal Box */
+        .terminal-box {
+            background: rgba(0, 0, 0, 0.8);
+            border: 2px solid #00ff88;
+            border-radius: 15px;
+            padding: 2rem;
+            margin: 3rem auto;
+            max-width: 600px;
+            box-shadow: 0 0 30px rgba(0, 255, 136, 0.3);
+            animation: terminalGlow 3s ease-in-out infinite alternate;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .terminal-box::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, #00ff88, #88ccff, #ffaa44, #ff6b9d);
+            border-radius: 15px;
+            z-index: -1;
+            animation: borderRotate 4s linear infinite;
+        }
+
+        @keyframes borderRotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes terminalGlow {
+            from { box-shadow: 0 0 30px rgba(0, 255, 136, 0.3); }
+            to { box-shadow: 0 0 50px rgba(0, 255, 136, 0.6), inset 0 0 20px rgba(0, 255, 136, 0.1); }
+        }
+
+        .terminal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #333;
+        }
+
+        .terminal-title {
+            color: #00ff88;
+            font-size: 1rem;
+        }
+
+        .terminal-controls {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .control-btn {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            animation: controlPulse 2s ease-in-out infinite;
+        }
+
+        .control-btn.close { background: #ff5f57; }
+        .control-btn.minimize { background: #ffbd2e; }
+        .control-btn.maximize { background: #28ca42; }
+
+        @keyframes controlPulse {
+            0%, 100% { opacity: 0.7; }
+            50% { opacity: 1; }
+        }
+
+        .command-line {
+            font-family: 'Courier New', monospace;
+            font-size: 1.1rem;
+            text-align: left;
+            margin: 1rem 0;
+            animation: typing 3s steps(20) 2s both;
+        }
+
+        .prompt {
+            color: #ffd700;
+            margin-right: 0.5rem;
+        }
+
+        .command {
+            color: #88ccff;
+        }
+
+        @keyframes typing {
+            from { width: 0; }
+            to { width: 100%; }
+        }
+
+        .info-line {
+            display: flex;
+            justify-content: space-between;
+            margin: 0.8rem 0;
+            padding: 0.5rem 0;
+            border-left: 3px solid #00ff88;
+            padding-left: 1rem;
+            animation: slideInLeft 1s ease-out;
+        }
+
+        .info-line:nth-child(odd) {
+            border-left-color: #ffaa44;
+            animation-delay: 0.2s;
+        }
+
+        .info-line:nth-child(even) {
+            border-left-color: #ff6b9d;
+            animation-delay: 0.4s;
+        }
+
+        @keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .info-label {
+            color: #88ccff;
+            min-width: 120px;
+        }
+
+        .info-value {
+            color: #00ff88;
+            font-weight: bold;
+            text-shadow: 0 0 10px #00ff88;
+        }
+
+        /* Status Indicator */
+        .status-indicator {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            justify-content: center;
+            margin-top: 2rem;
+        }
+
+        .status-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #00ff88;
+            animation: statusBlink 1.5s ease-in-out infinite;
+        }
+
+        @keyframes statusBlink {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0.3; }
+        }
+
+        .status-text {
+            color: #00ff88;
+            font-weight: bold;
+        }
+
+        /* DevOps Tools Section */
+        .tools-section {
+            padding: 5rem 0;
+            background: rgba(0, 0, 0, 0.3);
         }
 
         .section-title {
             text-align: center;
-            font-size: 3rem;
-            margin-bottom: 4rem;
-            background: linear-gradient(135deg, #40e0d0, #00d4ff);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+            font-size: 2.5rem;
+            color: #00ff88;
+            margin-bottom: 3rem;
+            text-shadow: 0 0 20px #00ff88;
         }
 
-        .skills-grid {
+        .tools-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 2rem;
             margin-top: 3rem;
         }
 
-        .skill-card {
-            background: linear-gradient(145deg, rgba(64, 224, 208, 0.1), rgba(0, 153, 255, 0.1));
-            border-radius: 20px;
+        .tool-card {
+            background: rgba(0, 0, 0, 0.6);
+            border: 1px solid #00ff88;
+            border-radius: 15px;
             padding: 2rem;
             text-align: center;
-            border: 1px solid rgba(64, 224, 208, 0.2);
             transition: all 0.3s ease;
+            animation: cardFloat 3s ease-in-out infinite;
             position: relative;
             overflow: hidden;
         }
 
-        .skill-card::before {
+        .tool-card::before {
             content: '';
             position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: linear-gradient(45deg, transparent, rgba(64, 224, 208, 0.1), transparent);
-            transform: rotate(45deg);
-            transition: all 0.5s ease;
-            opacity: 0;
+            top: -100%;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(transparent, rgba(0, 255, 136, 0.1), transparent);
+            transition: top 0.5s;
         }
 
-        .skill-card:hover::before {
-            opacity: 1;
-            animation: shimmer 2s linear infinite;
+        .tool-card:hover::before {
+            top: 100%;
         }
 
-        @keyframes shimmer {
-            0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
-            100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+        .tool-card:hover {
+            transform: translateY(-15px) scale(1.05);
+            border-color: #ffd700;
+            box-shadow: 0 20px 40px rgba(0, 255, 136, 0.3);
         }
 
-        .skill-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 20px 40px rgba(64, 224, 208, 0.2);
-            border-color: rgba(64, 224, 208, 0.5);
+        @keyframes cardFloat {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-5px); }
         }
 
-        .skill-icon {
+        .tool-card:nth-child(1) { animation-delay: 0s; border-color: #ff6b9d; }
+        .tool-card:nth-child(2) { animation-delay: 0.5s; border-color: #ffaa44; }
+        .tool-card:nth-child(3) { animation-delay: 1s; border-color: #88ccff; }
+        .tool-card:nth-child(4) { animation-delay: 1.5s; border-color: #00ff88; }
+        .tool-card:nth-child(5) { animation-delay: 2s; border-color: #ff6b9d; }
+        .tool-card:nth-child(6) { animation-delay: 2.5s; border-color: #ffaa44; }
+
+        .tool-icon {
             font-size: 3rem;
-            color: #40e0d0;
             margin-bottom: 1rem;
-            position: relative;
-            z-index: 1;
+            animation: rotate 4s linear infinite;
         }
 
-        .skill-title {
-            font-size: 1.3rem;
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-            position: relative;
-            z-index: 1;
+        @keyframes rotate {
+            from { transform: rotateY(0deg); }
+            to { transform: rotateY(360deg); }
         }
 
-        .skill-description {
-            color: #b3b3cc;
+        .tool-name {
+            color: #ffd700;
+            font-size: 1.4rem;
+            margin-bottom: 1rem;
+            font-weight: bold;
+        }
+
+        .tool-description {
+            color: #88ccff;
             font-size: 0.95rem;
-            position: relative;
-            z-index: 1;
+            line-height: 1.6;
+            margin-bottom: 1rem;
         }
 
-        /* Pipeline Animation */
-        .pipeline-section {
-            padding: 100px 0;
-            position: relative;
+        .tool-commands {
+            background: rgba(0, 0, 0, 0.8);
+            border: 1px solid #333;
+            border-radius: 8px;
+            padding: 1rem;
+            text-align: left;
+            font-family: 'Courier New', monospace;
+            font-size: 0.85rem;
         }
 
-        .pipeline-container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            position: relative;
-            margin: 3rem 0;
-            flex-wrap: wrap;
-            gap: 2rem;
+        .command-example {
+            color: #00ff88;
+            margin: 0.3rem 0;
+            animation: fadeIn 2s ease-out;
         }
 
-        .pipeline-step {
-            background: linear-gradient(145deg, rgba(64, 224, 208, 0.15), rgba(0, 153, 255, 0.15));
-            border-radius: 15px;
-            padding: 1.5rem;
-            text-align: center;
-            border: 2px solid rgba(64, 224, 208, 0.3);
-            flex: 1;
-            min-width: 200px;
-            position: relative;
-            transition: all 0.3s ease;
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
 
-        .pipeline-step:hover {
-            transform: scale(1.05);
-            border-color: #40e0d0;
-            box-shadow: 0 10px 30px rgba(64, 224, 208, 0.3);
-        }
-
-        .pipeline-arrow {
-            font-size: 2rem;
-            color: #40e0d0;
-            animation: pulse 2s infinite;
-        }
-
-        @keyframes pulse {
-            0%, 100% { opacity: 0.6; transform: scale(1); }
-            50% { opacity: 1; transform: scale(1.1); }
+        .command-prompt {
+            color: #ffd700;
+            margin-right: 0.5rem;
         }
 
         /* Footer */
-        .footer {
-            background: rgba(0, 0, 0, 0.3);
-            padding: 3rem 0;
+        footer {
+            background: rgba(0, 0, 0, 0.9);
+            color: #88ccff;
             text-align: center;
-            border-top: 1px solid rgba(64, 224, 208, 0.2);
+            padding: 2rem 0;
+            border-top: 2px solid #00ff88;
         }
 
-        .social-links {
+        .footer-content {
             display: flex;
             justify-content: center;
-            gap: 2rem;
-            margin-bottom: 2rem;
-        }
-
-        .social-link {
-            display: inline-flex;
             align-items: center;
-            justify-content: center;
-            width: 50px;
-            height: 50px;
-            background: linear-gradient(145deg, rgba(64, 224, 208, 0.2), rgba(0, 153, 255, 0.2));
-            border-radius: 50%;
-            color: #40e0d0;
-            text-decoration: none;
-            font-size: 1.5rem;
-            transition: all 0.3s ease;
-            border: 1px solid rgba(64, 224, 208, 0.3);
+            gap: 2rem;
+            flex-wrap: wrap;
         }
 
-        .social-link:hover {
-            background: linear-gradient(145deg, #40e0d0, #00d4ff);
-            color: #0f0f23;
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(64, 224, 208, 0.3);
+        .footer-text {
+            color: #88ccff;
         }
 
-        /* Responsive */
+        .footer-highlight {
+            color: #ffd700;
+            font-weight: bold;
+            text-shadow: 0 0 10px #ffd700;
+        }
+
+        /* Cursor Animation */
+        .cursor {
+            display: inline-block;
+            background-color: #00ff88;
+            margin-left: 3px;
+            width: 2px;
+            animation: blink 1s infinite;
+        }
+
+        @keyframes blink {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0; }
+        }
+
+        /* Responsive Design */
         @media (max-width: 768px) {
-            .name-title {
-                font-size: 3rem;
-            }
-
-            .subtitle {
-                font-size: 1.4rem;
-            }
-
-            .skills-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .pipeline-container {
-                flex-direction: column;
-            }
-
-            .pipeline-arrow {
-                transform: rotate(90deg);
-            }
-
-            .social-links {
-                gap: 1rem;
-            }
-        }
-
-        /* Code Terminal Effect */
-        .terminal {
-            background: #1a1a2e;
-            border-radius: 10px;
-            padding: 1rem;
-            margin: 2rem 0;
-            border: 1px solid rgba(64, 224, 208, 0.3);
-            font-family: 'Courier New', monospace;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .terminal::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 3px;
-            background: linear-gradient(90deg, #40e0d0, #00d4ff, #0099ff);
-        }
-
-        .terminal-header {
-            color: #40e0d0;
-            font-size: 0.9rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .terminal-code {
-            color: #b3b3cc;
-            font-size: 0.85rem;
-            line-height: 1.4;
-        }
-
-        .highlight {
-            color: #40e0d0;
+            .greeting { font-size: 2.5rem; }
+            .welcome-text { font-size: 1.5rem; }
+            .subtitle { font-size: 1rem; }
+            .terminal-box { padding: 1.5rem; margin: 2rem auto; }
+            nav { padding: 1rem; }
+            .logo { font-size: 1.2rem; }
+            .tools-grid { grid-template-columns: 1fr; }
         }
     </style>
 </head>
 <body>
-    <div class="floating-particles">
-        <div class="particle"></div>
-        <div class="particle"></div>
-        <div class="particle"></div>
-        <div class="particle"></div>
-        <div class="particle"></div>
-        <div class="particle"></div>
-        <div class="particle"></div>
-        <div class="particle"></div>
-        <div class="particle"></div>
-    </div>
+    <div class="stars" id="stars"></div>
 
-    <section class="header">
-        <div class="container">
-            <div class="hero-content">
-                <h2 style="font-size: 2.2rem; color: #40e0d0; margin-bottom: 1rem; font-weight: 300;">Hi Sridhar</h2>
-                <p class="subtitle">DevOps Engineer & Cloud Architect</p>
-                <p class="tagline">Building Scalable Infrastructure | Automating Excellence</p>
-                
-                <div class="terminal">
-                    <div class="terminal-header">$ sridhar --info</div>
-                    <div class="terminal-code">
-                        <span class="highlight">Role:</span> DevOps Engineer<br>
-                        <span class="highlight">Expertise:</span> Kubernetes, Docker, AWS, CI/CD<br>
-                        <span class="highlight">Mission:</span> Streamlining deployment pipelines<br>
-                        <span class="highlight">Status:</span> <span style="color: #4ade80;">● Online</span>
+    <header>
+        <nav>
+            <div class="logo">DevOps</div>
+            <div class="sridhar-name">Sridhar</div>
+        </nav>
+    </header>
+
+    <main>
+        <section class="terminal-section">
+            <div class="container">
+                <div class="terminal-content">
+                    <h1 class="greeting">Hi Sridhar</h1>
+                    <h2 class="welcome-text">Welcome to DevOps</h2>
+                    <p class="subtitle">Building Scalable Infrastructure | Automating Excellence</p>
+
+                    <div class="terminal-box">
+                        <div class="terminal-header">
+                            <span class="terminal-title">devops-terminal</span>
+                            <div class="terminal-controls">
+                                <div class="control-btn close"></div>
+                                <div class="control-btn minimize"></div>
+                                <div class="control-btn maximize"></div>
+                            </div>
+                        </div>
+
+                        <div class="command-line">
+                            <span class="prompt">$</span>
+                            <span class="command">sridhar --info</span>
+                            <span class="cursor">|</span>
+                        </div>
+
+                        <div class="info-line">
+                            <span class="info-label">Role:</span>
+                            <span class="info-value">DevOps Engineer</span>
+                        </div>
+                        
+                        <div class="info-line">
+                            <span class="info-label">Expertise:</span>
+                            <span class="info-value">Kubernetes, Docker, AWS, CI/CD</span>
+                        </div>
+                        
+                        <div class="info-line">
+                            <span class="info-label">Mission:</span>
+                            <span class="info-value">Streamlining deployment pipelines</span>
+                        </div>
+                        
+                        <div class="info-line">
+                            <span class="info-label">Status:</span>
+                            <span class="info-value">🟢 Online</span>
+                        </div>
+
+                        <div class="status-indicator">
+                            <div class="status-dot"></div>
+                            <span class="status-text">System Ready</span>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <section class="skills-section">
-        <div class="container">
-            <h2 class="section-title">DevOps Expertise</h2>
-            <div class="skills-grid">
-                <div class="skill-card">
-                    <div class="skill-icon"><i class="fab fa-docker"></i></div>
-                    <h3 class="skill-title">Containerization</h3>
-                    <p class="skill-description">Docker, Kubernetes, Container Orchestration, Microservices Architecture</p>
-                </div>
+        <section class="tools-section">
+            <div class="container">
+                <h2 class="section-title">DevOps Arsenal</h2>
                 
-                <div class="skill-card">
-                    <div class="skill-icon"><i class="fas fa-cloud"></i></div>
-                    <h3 class="skill-title">Cloud Platforms</h3>
-                    <p class="skill-description">AWS, Azure, GCP, Infrastructure as Code, Multi-cloud Strategies</p>
-                </div>
-                
-                <div class="skill-card">
-                    <div class="skill-icon"><i class="fas fa-code-branch"></i></div>
-                    <h3 class="skill-title">CI/CD Pipelines</h3>
-                    <p class="skill-description">Jenkins, GitLab CI, GitHub Actions, Automated Testing & Deployment</p>
-                </div>
-                
-                <div class="skill-card">
-                    <div class="skill-icon"><i class="fas fa-chart-line"></i></div>
-                    <h3 class="skill-title">Monitoring & Logging</h3>
-                    <p class="skill-description">Prometheus, Grafana, ELK Stack, Application Performance Monitoring</p>
-                </div>
-                
-                <div class="skill-card">
-                    <div class="skill-icon"><i class="fas fa-shield-alt"></i></div>
-                    <h3 class="skill-title">Security & Compliance</h3>
-                    <p class="skill-description">DevSecOps, Security Scanning, Compliance Automation, Risk Management</p>
-                </div>
-                
-                <div class="skill-card">
-                    <div class="skill-icon"><i class="fas fa-cogs"></i></div>
-                    <h3 class="skill-title">Infrastructure Automation</h3>
-                    <p class="skill-description">Terraform, Ansible, Puppet, Configuration Management, IaC</p>
+                <div class="tools-grid">
+                    <div class="tool-card">
+                        <div class="tool-icon">🐳</div>
+                        <h3 class="tool-name">Docker</h3>
+                        <p class="tool-description">Containerization platform for packaging applications with their dependencies</p>
+                        <div class="tool-commands">
+                            <div class="command-example">
+                                <span class="command-prompt">$</span>docker build -t myapp .
+                            </div>
+                            <div class="command-example">
+                                <span class="command-prompt">$</span>docker run -p 8080:80 myapp
+                            </div>
+                            <div class="command-example">
+                                <span class="command-prompt">$</span>docker-compose up -d
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="tool-card">
+                        <div class="tool-icon">☸️</div>
+                        <h3 class="tool-name">Kubernetes</h3>
+                        <p class="tool-description">Container orchestration platform for managing containerized applications</p>
+                        <div class="tool-commands">
+                            <div class="command-example">
+                                <span class="command-prompt">$</span>kubectl get pods
+                            </div>
+                            <div class="command-example">
+                                <span class="command-prompt">$</span>kubectl apply -f deployment.yaml
+                            </div>
+                            <div class="command-example">
+                                <span class="command-prompt">$</span>kubectl scale deployment myapp --replicas=3
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="tool-card">
+                        <div class="tool-icon">☁️</div>
+                        <h3 class="tool-name">AWS</h3>
+                        <p class="tool-description">Amazon Web Services cloud platform for scalable infrastructure</p>
+                        <div class="tool-commands">
+                            <div class="command-example">
+                                <span class="command-prompt">$</span>aws ec2 describe-instances
+                            </div>
+                            <div class="command-example">
+                                <span class="command-prompt">$</span>aws s3 cp file.txt s3://mybucket/
+                            </div>
+                            <div class="command-example">
+                                <span class="command-prompt">$</span>aws eks update-kubeconfig --name cluster
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="tool-card">
+                        <div class="tool-icon">🔧</div>
+                        <h3 class="tool-name">Terraform</h3>
+                        <p class="tool-description">Infrastructure as Code tool for provisioning cloud resources</p>
+                        <div class="tool-commands">
+                            <div class="command-example">
+                                <span class="command-prompt">$</span>terraform init
+                            </div>
+                            <div class="command-example">
+                                <span class="command-prompt">$</span>terraform plan
+                            </div>
+                            <div class="command-example">
+                                <span class="command-prompt">$</span>terraform apply
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="tool-card">
+                        <div class="tool-icon">🔄</div>
+                        <h3 class="tool-name">Jenkins</h3>
+                        <p class="tool-description">CI/CD automation server for building and deploying applications</p>
+                        <div class="tool-commands">
+                            <div class="command-example">
+                                <span class="command-prompt">$</span>jenkins-cli build job-name
+                            </div>
+                            <div class="command-example">
+                                <span class="command-prompt">$</span>curl -X POST http://jenkins/job/deploy/build
+                            </div>
+                            <div class="command-example">
+                                <span class="command-prompt">$</span>jenkins-cli console job-name 42
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="tool-card">
+                        <div class="tool-icon">📊</div>
+                        <h3 class="tool-name">Monitoring</h3>
+                        <p class="tool-description">Prometheus & Grafana stack for monitoring and observability</p>
+                        <div class="tool-commands">
+                            <div class="command-example">
+                                <span class="command-prompt">$</span>promtool query instant 'up'
+                            </div>
+                            <div class="command-example">
+                                <span class="command-prompt">$</span>curl http://prometheus:9090/metrics
+                            </div>
+                            <div class="command-example">
+                                <span class="command-prompt">$</span>grafana-cli admin reset-admin-password
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
+    </main>
 
-    <section class="pipeline-section">
-        <div class="container">
-            <h2 class="section-title">DevOps Pipeline</h2>
-            <div class="pipeline-container">
-                <div class="pipeline-step">
-                    <div class="skill-icon"><i class="fas fa-code"></i></div>
-                    <h3>Development</h3>
-                    <p>Code, Commit, Collaborate</p>
-                </div>
-                
-                <div class="pipeline-arrow"><i class="fas fa-arrow-right"></i></div>
-                
-                <div class="pipeline-step">
-                    <div class="skill-icon"><i class="fas fa-vial"></i></div>
-                    <h3>Testing</h3>
-                    <p>Automated Quality Assurance</p>
-                </div>
-                
-                <div class="pipeline-arrow"><i class="fas fa-arrow-right"></i></div>
-                
-                <div class="pipeline-step">
-                    <div class="skill-icon"><i class="fas fa-rocket"></i></div>
-                    <h3>Deployment</h3>
-                    <p>Continuous Integration & Delivery</p>
-                </div>
-                
-                <div class="pipeline-arrow"><i class="fas fa-arrow-right"></i></div>
-                
-                <div class="pipeline-step">
-                    <div class="skill-icon"><i class="fas fa-eye"></i></div>
-                    <h3>Monitoring</h3>
-                    <p>Performance & Health Tracking</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <footer class="footer">
-        <div class="container">
-            <div class="social-links">
-                <a href="#" class="social-link"><i class="fab fa-linkedin"></i></a>
-                <a href="#" class="social-link"><i class="fab fa-github"></i></a>
-                <a href="#" class="social-link"><i class="fab fa-docker"></i></a>
-                <a href="#" class="social-link"><i class="fas fa-envelope"></i></a>
-            </div>
-            <p>&copy; 2025 Sridhar - DevOps Professional. Automating the Future.</p>
+    <footer>
+        <div class="footer-content">
+            <span class="footer-text">&copy; 2025 DevOps Terminal by</span>
+            <span class="footer-highlight">Sridhar</span>
         </div>
     </footer>
 
     <script>
-        // Add smooth scrolling and interactive effects
-        document.addEventListener('DOMContentLoaded', function() {
-            // Smooth reveal animation for skill cards
-            const observerOptions = {
-                threshold: 0.1,
-                rootMargin: '0px 0px -50px 0px'
-            };
+        // Generate animated stars
+        function createStars() {
+            const starsContainer = document.getElementById('stars');
+            const numberOfStars = 150;
 
+            for (let i = 0; i < numberOfStars; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                star.style.animationDelay = Math.random() * 3 + 's';
+                star.style.animationDuration = (Math.random() * 3 + 2) + 's';
+                starsContainer.appendChild(star);
+            }
+        }
+
+        // Professional DevOps terminal commands
+        function typeEffect() {
+            const commands = [
+                'sridhar --info',
+                'kubectl get nodes',
+                'docker ps -a',
+                'terraform plan',
+                'aws ecs list-clusters',
+                'helm list',
+                'ansible-playbook deploy.yml',
+                'jenkins-cli build pipeline'
+            ];
+            
+            const commandElement = document.querySelector('.command');
+            let commandIndex = 0;
+            
+            setInterval(() => {
+                commandIndex = (commandIndex + 1) % commands.length;
+                commandElement.style.animation = 'none';
+                setTimeout(() => {
+                    commandElement.textContent = commands[commandIndex];
+                    commandElement.style.animation = 'typing 2s steps(20) both';
+                }, 100);
+            }, 4000);
+        }
+
+        // Animate command examples in tool cards
+        function animateCommands() {
+            const commandExamples = document.querySelectorAll('.command-example');
+            
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
-                        entry.target.style.opacity = '1';
-                        entry.target.style.transform = 'translateY(0)';
+                        entry.target.style.animation = 'fadeIn 1s ease-out forwards';
+                        entry.target.style.animationDelay = Math.random() * 1 + 's';
                     }
                 });
-            }, observerOptions);
+            }, { threshold: 0.3 });
 
-            // Apply initial styles and observe elements
-            const skillCards = document.querySelectorAll('.skill-card');
-            skillCards.forEach((card, index) => {
-                card.style.opacity = '0';
-                card.style.transform = 'translateY(50px)';
-                card.style.transition = `all 0.6s ease ${index * 0.1}s`;
-                observer.observe(card);
-            });
+            commandExamples.forEach(cmd => observer.observe(cmd));
+        }
 
-            // Pipeline step animation
-            const pipelineSteps = document.querySelectorAll('.pipeline-step');
-            pipelineSteps.forEach((step, index) => {
-                step.style.opacity = '0';
-                step.style.transform = 'scale(0.8)';
-                step.style.transition = `all 0.6s ease ${index * 0.2}s`;
-                observer.observe(step);
-            });
+        // Interactive tool cards with DevOps-themed responses
+        function addToolInteractions() {
+            const toolCards = document.querySelectorAll('.tool-card');
+            const toolMessages = [
+                "🐳 Docker: Containerizing your applications!",
+                "☸️ Kubernetes: Orchestrating at scale!",
+                "☁️ AWS: Cloud infrastructure ready!",
+                "🔧 Terraform: Infrastructure as Code!",
+                "🔄 Jenkins: CI/CD pipeline active!",
+                "📊 Monitoring: System health checked!"
+            ];
 
-            // Dynamic particle colors
-            const particles = document.querySelectorAll('.particle');
-            setInterval(() => {
-                particles.forEach(particle => {
-                    const colors = ['#40e0d0', '#00d4ff', '#0099ff', '#4ade80', '#f59e0b'];
-                    particle.style.background = colors[Math.floor(Math.random() * colors.length)];
+            toolCards.forEach((card, index) => {
+                card.addEventListener('click', function() {
+                    // Create DevOps status popup
+                    const popup = document.createElement('div');
+                    popup.textContent = toolMessages[index];
+                    popup.style.cssText = `
+                        position: fixed;
+                        top: 20%;
+                        right: 20px;
+                        background: rgba(0, 255, 136, 0.9);
+                        color: black;
+                        padding: 1rem 1.5rem;
+                        border-radius: 8px;
+                        font-weight: bold;
+                        z-index: 10000;
+                        font-family: 'Courier New', monospace;
+                        animation: slideInRight 0.5s ease-out;
+                    `;
+                    
+                    document.body.appendChild(popup);
+                    
+                    setTimeout(() => {
+                        popup.remove();
+                    }, 3000);
+                    
+                    // Card rotation effect
+                    this.style.transform = 'scale(1.05) rotateY(360deg)';
+                    setTimeout(() => {
+                        this.style.transform = '';
+                    }, 800);
                 });
-            }, 3000);
+            });
+        }
 
-            // Terminal typing effect
-            const terminalCode = document.querySelector('.terminal-code');
-            if (terminalCode) {
-                const originalText = terminalCode.innerHTML;
-                terminalCode.innerHTML = '';
-                let index = 0;
+        // Matrix-style command rain
+        function createCommandRain() {
+            const commands = ['kubectl', 'docker', 'terraform', 'aws', 'helm', 'ansible'];
+            
+            setInterval(() => {
+                const command = document.createElement('div');
+                command.textContent = commands[Math.floor(Math.random() * commands.length)];
+                command.style.cssText = `
+                    position: fixed;
+                    top: -50px;
+                    left: ${Math.random() * window.innerWidth}px;
+                    color: rgba(0, 255, 136, 0.6);
+                    font-family: 'Courier New', monospace;
+                    font-size: 12px;
+                    z-index: 2;
+                    animation: fall 5s linear forwards;
+                    pointer-events: none;
+                `;
                 
-                function typeText() {
-                    if (index < originalText.length) {
-                        terminalCode.innerHTML = originalText.substring(0, index + 1);
-                        index++;
-                        setTimeout(typeText, 50);
+                document.body.appendChild(command);
+                
+                setTimeout(() => {
+                    command.remove();
+                }, 5000);
+            }, 2000);
+        }
+
+        // Initialize all effects
+        document.addEventListener('DOMContentLoaded', () => {
+            createStars();
+            typeEffect();
+            animateCommands();
+            addToolInteractions();
+            createCommandRain();
+            
+            // Add CSS for additional animations
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes slideInRight {
+                    from {
+                        opacity: 0;
+                        transform: translateX(100px);
+                    }
+                    to {
+                        opacity: 1;
+                        transform: translateX(0);
                     }
                 }
                 
-                setTimeout(typeText, 2000);
-            }
+                @keyframes fall {
+                    from {
+                        transform: translateY(-50px);
+                        opacity: 1;
+                    }
+                    to {
+                        transform: translateY(100vh);
+                        opacity: 0;
+                    }
+                }
+            `;
+            document.head.appendChild(style);
         });
+
+        // Terminal glitch effect
+        setInterval(() => {
+            const terminal = document.querySelector('.terminal-box');
+            terminal.style.filter = 'hue-rotate(180deg) contrast(1.2)';
+            setTimeout(() => {
+                terminal.style.filter = 'none';
+            }, 150);
+        }, 15000);
     </script>
 </body>
 </html>
