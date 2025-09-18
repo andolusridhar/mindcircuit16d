@@ -801,6 +801,344 @@
             }, 2000);
         }
 
+        // System monitoring simulation
+        function simulateSystemMetrics() {
+            const metrics = [
+                'CPU: 23.4% | Memory: 67.8% | Disk: 45.2%',
+                'Pods: 47/50 Running | Services: 23 Active',
+                'Pipeline Status: ✅ Build Success | ⚡ Deploy Ready',
+                'Cluster Health: 🟢 All Nodes Ready',
+                'Container Registry: 15 Images | 3 New Pushes'
+            ];
+            
+            const metricsDisplay = document.createElement('div');
+            metricsDisplay.style.cssText = `
+                position: fixed;
+                bottom: 20px;
+                left: 20px;
+                background: rgba(0, 0, 0, 0.8);
+                color: #00ff88;
+                padding: 0.5rem 1rem;
+                border: 1px solid #00ff88;
+                border-radius: 5px;
+                font-family: 'Courier New', monospace;
+                font-size: 0.8rem;
+                z-index: 1000;
+                min-width: 300px;
+                animation: fadeInUp 0.5s ease-out;
+            `;
+            
+            let metricIndex = 0;
+            
+            function updateMetric() {
+                metricsDisplay.textContent = metrics[metricIndex];
+                metricIndex = (metricIndex + 1) % metrics.length;
+            }
+            
+            updateMetric();
+            document.body.appendChild(metricsDisplay);
+            
+            setInterval(updateMetric, 3000);
+        }
+
+        // Network activity visualization
+        function createNetworkActivity() {
+            const activity = document.createElement('div');
+            activity.style.cssText = `
+                position: fixed;
+                top: 50%;
+                right: 20px;
+                width: 200px;
+                height: 100px;
+                pointer-events: none;
+                z-index: 5;
+            `;
+            
+            document.body.appendChild(activity);
+            
+            setInterval(() => {
+                const packet = document.createElement('div');
+                packet.style.cssText = `
+                    position: absolute;
+                    width: 4px;
+                    height: 4px;
+                    background: #00ff88;
+                    border-radius: 50%;
+                    animation: networkFlow 2s linear forwards;
+                `;
+                
+                const startX = Math.random() * 200;
+                const startY = Math.random() * 100;
+                packet.style.left = startX + 'px';
+                packet.style.top = startY + 'px';
+                
+                activity.appendChild(packet);
+                
+                setTimeout(() => {
+                    packet.remove();
+                }, 2000);
+            }, 300);
+        }
+
+        // Real-time log simulation
+        function simulateLogs() {
+            const logMessages = [
+                '[INFO] Container started successfully',
+                '[DEBUG] Health check passed',
+                '[WARN] High memory usage detected',
+                '[INFO] Scaling deployment to 3 replicas',
+                '[SUCCESS] Pipeline completed in 2m 34s',
+                '[INFO] SSL certificate renewed',
+                '[DEBUG] Database connection established',
+                '[INFO] Backup completed successfully'
+            ];
+            
+            const logContainer = document.createElement('div');
+            logContainer.style.cssText = `
+                position: fixed;
+                top: 80px;
+                right: 20px;
+                width: 350px;
+                max-height: 200px;
+                background: rgba(0, 0, 0, 0.9);
+                border: 1px solid #333;
+                border-radius: 8px;
+                padding: 1rem;
+                font-family: 'Courier New', monospace;
+                font-size: 0.75rem;
+                color: #00ff88;
+                z-index: 1000;
+                overflow-y: auto;
+            `;
+            
+            const logTitle = document.createElement('div');
+            logTitle.textContent = '📋 System Logs';
+            logTitle.style.cssText = `
+                color: #ffd700;
+                margin-bottom: 0.5rem;
+                font-weight: bold;
+                text-align: center;
+            `;
+            
+            logContainer.appendChild(logTitle);
+            document.body.appendChild(logContainer);
+            
+            function addLogMessage() {
+                const logLine = document.createElement('div');
+                const timestamp = new Date().toLocaleTimeString();
+                const message = logMessages[Math.floor(Math.random() * logMessages.length)];
+                
+                logLine.textContent = `${timestamp} ${message}`;
+                logLine.style.cssText = `
+                    margin: 0.2rem 0;
+                    padding: 0.2rem;
+                    animation: logFadeIn 0.5s ease-out;
+                `;
+                
+                logContainer.appendChild(logLine);
+                
+                // Keep only last 8 messages
+                const logLines = logContainer.querySelectorAll('div:not(:first-child)');
+                if (logLines.length > 8) {
+                    logLines[0].remove();
+                }
+                
+                logContainer.scrollTop = logContainer.scrollHeight;
+            }
+            
+            // Add initial logs
+            setTimeout(() => {
+                for (let i = 0; i < 3; i++) {
+                    setTimeout(addLogMessage, i * 500);
+                }
+            }, 2000);
+            
+            // Continue adding logs
+            setInterval(addLogMessage, 4000);
+        }
+
+        // Performance graphs
+        function createPerformanceGraphs() {
+            const graphContainer = document.createElement('div');
+            graphContainer.style.cssText = `
+                position: fixed;
+                bottom: 20px;
+                right: 20px;
+                width: 250px;
+                height: 120px;
+                background: rgba(0, 0, 0, 0.8);
+                border: 1px solid #00ff88;
+                border-radius: 8px;
+                padding: 1rem;
+                z-index: 1000;
+            `;
+            
+            const graphTitle = document.createElement('div');
+            graphTitle.textContent = '📊 Performance';
+            graphTitle.style.cssText = `
+                color: #ffd700;
+                font-weight: bold;
+                text-align: center;
+                margin-bottom: 0.5rem;
+                font-size: 0.9rem;
+            `;
+            
+            const canvas = document.createElement('canvas');
+            canvas.width = 220;
+            canvas.height = 60;
+            canvas.style.cssText = `
+                width: 100%;
+                height: 60px;
+            `;
+            
+            graphContainer.appendChild(graphTitle);
+            graphContainer.appendChild(canvas);
+            document.body.appendChild(graphContainer);
+            
+            const ctx = canvas.getContext('2d');
+            let dataPoints = [];
+            
+            function drawGraph() {
+                ctx.clearRect(0, 0, 220, 60);
+                
+                // Generate new data point
+                const newPoint = Math.random() * 40 + 20;
+                dataPoints.push(newPoint);
+                
+                if (dataPoints.length > 50) {
+                    dataPoints.shift();
+                }
+                
+                // Draw grid
+                ctx.strokeStyle = '#333';
+                ctx.lineWidth = 1;
+                for (let i = 0; i < 5; i++) {
+                    const y = (i * 60) / 4;
+                    ctx.beginPath();
+                    ctx.moveTo(0, y);
+                    ctx.lineTo(220, y);
+                    ctx.stroke();
+                }
+                
+                // Draw line
+                ctx.strokeStyle = '#00ff88';
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+                
+                dataPoints.forEach((point, index) => {
+                    const x = (index * 220) / (dataPoints.length - 1);
+                    const y = 60 - (point * 60) / 100;
+                    
+                    if (index === 0) {
+                        ctx.moveTo(x, y);
+                    } else {
+                        ctx.lineTo(x, y);
+                    }
+                });
+                
+                ctx.stroke();
+                
+                // Add glow effect
+                ctx.shadowColor = '#00ff88';
+                ctx.shadowBlur = 5;
+                ctx.stroke();
+                ctx.shadowBlur = 0;
+            }
+            
+            setInterval(drawGraph, 500);
+        }
+
+        // Deployment progress simulation
+        function simulateDeployment() {
+            const deploymentSteps = [
+                'Building Docker image...',
+                'Pushing to registry...',
+                'Updating Kubernetes manifests...',
+                'Rolling out deployment...',
+                'Health checks passing...',
+                'Deployment complete! ✅'
+            ];
+            
+            function runDeployment() {
+                const deploymentBox = document.createElement('div');
+                deploymentBox.style.cssText = `
+                    position: fixed;
+                    top: 50%;
+                    left: 50%;
+                    transform: translate(-50%, -50%);
+                    background: rgba(0, 0, 0, 0.9);
+                    border: 2px solid #ffd700;
+                    border-radius: 10px;
+                    padding: 2rem;
+                    z-index: 10000;
+                    min-width: 400px;
+                    text-align: center;
+                    font-family: 'Courier New', monospace;
+                    color: #00ff88;
+                `;
+                
+                const title = document.createElement('div');
+                title.textContent = '🚀 Deployment in Progress';
+                title.style.cssText = `
+                    color: #ffd700;
+                    font-size: 1.2rem;
+                    font-weight: bold;
+                    margin-bottom: 1rem;
+                `;
+                
+                const progressBar = document.createElement('div');
+                progressBar.style.cssText = `
+                    width: 100%;
+                    height: 20px;
+                    background: #333;
+                    border-radius: 10px;
+                    overflow: hidden;
+                    margin-bottom: 1rem;
+                `;
+                
+                const progressFill = document.createElement('div');
+                progressFill.style.cssText = `
+                    height: 100%;
+                    background: linear-gradient(90deg, #00ff88, #ffd700);
+                    width: 0%;
+                    border-radius: 10px;
+                    transition: width 0.5s ease;
+                `;
+                
+                const statusText = document.createElement('div');
+                statusText.style.cssText = `
+                    color: #88ccff;
+                    margin-top: 1rem;
+                `;
+                
+                progressBar.appendChild(progressFill);
+                deploymentBox.appendChild(title);
+                deploymentBox.appendChild(progressBar);
+                deploymentBox.appendChild(statusText);
+                document.body.appendChild(deploymentBox);
+                
+                let step = 0;
+                const deployInterval = setInterval(() => {
+                    if (step < deploymentSteps.length) {
+                        statusText.textContent = deploymentSteps[step];
+                        progressFill.style.width = ((step + 1) / deploymentSteps.length) * 100 + '%';
+                        step++;
+                    } else {
+                        clearInterval(deployInterval);
+                        setTimeout(() => {
+                            deploymentBox.remove();
+                        }, 2000);
+                    }
+                }, 1000);
+            }
+            
+            // Trigger random deployments
+            setTimeout(() => {
+                runDeployment();
+                setInterval(runDeployment, 45000);
+            }, 10000);
+        }
+
         // Initialize all effects
         document.addEventListener('DOMContentLoaded', () => {
             createStars();
@@ -808,6 +1146,11 @@
             animateCommands();
             addToolInteractions();
             createCommandRain();
+            simulateSystemMetrics();
+            createNetworkActivity();
+            simulateLogs();
+            createPerformanceGraphs();
+            simulateDeployment();
             
             // Add CSS for additional animations
             const style = document.createElement('style');
@@ -831,6 +1174,43 @@
                     to {
                         transform: translateY(100vh);
                         opacity: 0;
+                    }
+                }
+                
+                @keyframes networkFlow {
+                    0% {
+                        opacity: 1;
+                        transform: scale(1);
+                    }
+                    50% {
+                        opacity: 0.8;
+                        transform: scale(1.2);
+                    }
+                    100% {
+                        opacity: 0;
+                        transform: scale(0.5) translate(50px, -20px);
+                    }
+                }
+                
+                @keyframes logFadeIn {
+                    from {
+                        opacity: 0;
+                        transform: translateX(-10px);
+                    }
+                    to {
+                        opacity: 1;
+                        transform: translateX(0);
+                    }
+                }
+                
+                @keyframes fadeInUp {
+                    from {
+                        opacity: 0;
+                        transform: translateY(20px);
+                    }
+                    to {
+                        opacity: 1;
+                        transform: translateY(0);
                     }
                 }
             `;
