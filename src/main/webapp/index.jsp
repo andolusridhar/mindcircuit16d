@@ -318,7 +318,7 @@
                     <i class="fab fa-docker"></i>
                 </div>
             </div>
-            <h1>Docker Magic</h1>
+            <h1>Docker</h1>
             <p class="subtitle">Containerize Your World</p>
         </header>
 
