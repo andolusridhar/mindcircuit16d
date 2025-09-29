@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Docker - Container Magic</title>
+    <title>Docker Animation Showcase</title>
     <style>
         * {
             margin: 0;
@@ -13,212 +13,176 @@
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
-            min-height: 100vh;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 25%, #f093fb 50%, #4facfe 75%, #00f2fe 100%);
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
+            color: white;
             overflow-x: hidden;
-            position: relative;
+            min-height: 100vh;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
         }
 
         .container {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 40px 20px;
+            padding: 20px;
+            position: relative;
+            z-index: 10;
         }
 
         header {
             text-align: center;
-            margin-bottom: 50px;
-            animation: fadeInDown 1s ease-out;
+            padding: 40px 0;
+            position: relative;
         }
 
         h1 {
-            font-size: 4em;
-            color: white;
-            text-shadow: 3px 3px 6px rgba(0,0,0,0.3);
+            font-size: 3.5rem;
             margin-bottom: 10px;
-            animation: pulse 2s infinite;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            animation: pulse 2s infinite alternate;
         }
 
-        .logo {
-            font-size: 5em;
-            animation: rotate 4s linear infinite;
+        @keyframes pulse {
+            from { transform: scale(1); }
+            to { transform: scale(1.05); }
+        }
+
+        .subtitle {
+            font-size: 1.5rem;
+            margin-bottom: 30px;
+            opacity: 0.9;
+        }
+
+        .creator {
+            font-size: 1.2rem;
+            background: rgba(255,255,255,0.2);
             display: inline-block;
+            padding: 8px 20px;
+            border-radius: 30px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.3);
         }
 
-        .tagline {
-            font-size: 1.5em;
-            color: #fff;
-            font-weight: 300;
-        }
-
-        .content-grid {
+        .content {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 30px;
-            margin-top: 40px;
+            margin: 50px 0;
         }
 
         .card {
-            background: rgba(255, 255, 255, 0.95);
+            background: rgba(255,255,255,0.15);
+            backdrop-filter: blur(10px);
             border-radius: 20px;
             padding: 30px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            border: 1px solid rgba(255,255,255,0.2);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
             transition: transform 0.3s ease, box-shadow 0.3s ease;
-            animation: fadeInUp 1s ease-out;
         }
 
         .card:hover {
             transform: translateY(-10px);
-            box-shadow: 0 15px 40px rgba(0,0,0,0.4);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.2);
         }
 
         .card h2 {
-            color: #667eea;
+            font-size: 1.8rem;
             margin-bottom: 15px;
-            font-size: 1.8em;
+            color: #FFD700;
         }
 
         .card p {
-            color: #555;
             line-height: 1.6;
-            font-size: 1.1em;
+            opacity: 0.9;
         }
 
-        .icon {
-            font-size: 3em;
-            margin-bottom: 15px;
-            animation: bounce 2s infinite;
+        .docker-icon {
+            width: 60px;
+            height: 60px;
+            margin: 0 auto 20px;
+            display: block;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+
+        .floating-containers {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .docker-container {
+            position: absolute;
+            width: 80px;
+            height: 100px;
+            background: linear-gradient(145deg, #0db7ed, #384d54);
+            border-radius: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+            animation: float-around 20s infinite linear;
+            opacity: 0.7;
+        }
+
+        .docker-container::before {
+            content: "🐳";
+            font-size: 2rem;
+        }
+
+        .docker-container::after {
+            content: attr(data-name);
+            font-size: 0.7rem;
+            margin-top: 5px;
+            color: white;
+        }
+
+        @keyframes float-around {
+            0% {
+                transform: translate(0, 100vh) rotate(0deg);
+            }
+            100% {
+                transform: translate(100vw, -100px) rotate(360deg);
+            }
         }
 
         .features {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            padding: 40px;
-            margin-top: 40px;
-            animation: fadeIn 1.5s ease-out;
-        }
-
-        .features h2 {
-            color: white;
-            font-size: 2.5em;
-            margin-bottom: 30px;
-            text-align: center;
-        }
-
-        .feature-list {
             display: flex;
+            justify-content: space-around;
             flex-wrap: wrap;
-            gap: 20px;
-            justify-content: center;
+            margin: 40px 0;
         }
 
-        .feature-item {
-            background: rgba(255, 255, 255, 0.2);
-            padding: 15px 30px;
-            border-radius: 50px;
-            color: white;
-            font-size: 1.1em;
-            transition: all 0.3s ease;
-            animation: slideIn 1s ease-out;
-        }
-
-        .feature-item:hover {
-            background: rgba(255, 255, 255, 0.3);
-            transform: scale(1.1);
-        }
-
-        .floating-shapes {
-            position: fixed;
-            width: 100%;
-            height: 100%;
-            top: 0;
-            left: 0;
-            pointer-events: none;
-            z-index: -1;
-        }
-
-        .shape {
-            position: absolute;
-            border-radius: 50%;
-            animation: float 6s infinite ease-in-out;
-        }
-
-        .shape:nth-child(1) {
-            width: 80px;
-            height: 80px;
-            background: rgba(255, 255, 255, 0.1);
-            top: 10%;
-            left: 10%;
-            animation-delay: 0s;
-        }
-
-        .shape:nth-child(2) {
-            width: 120px;
-            height: 120px;
-            background: rgba(255, 255, 255, 0.08);
-            top: 60%;
-            right: 20%;
-            animation-delay: 2s;
-        }
-
-        .shape:nth-child(3) {
-            width: 100px;
-            height: 100px;
-            background: rgba(255, 255, 255, 0.06);
-            bottom: 20%;
-            left: 30%;
-            animation-delay: 4s;
-        }
-
-        .credit {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background: rgba(255, 255, 255, 0.2);
-            backdrop-filter: blur(10px);
-            padding: 10px 20px;
-            border-radius: 10px;
-            color: white;
-            font-size: 0.9em;
-            animation: fadeIn 2s ease-out;
-        }
-
-        @keyframes fadeInDown {
-            from {
-                opacity: 0;
-                transform: translateY(-30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+        .feature {
+            text-align: center;
+            margin: 20px;
+            animation: fadeIn 1s ease-out;
         }
 
         @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-        }
-
-        @keyframes rotate {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 10px;
+            animation: bounce 2s infinite;
         }
 
         @keyframes bounce {
@@ -226,90 +190,138 @@
             50% { transform: translateY(-20px); }
         }
 
-        @keyframes float {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-30px); }
+        footer {
+            text-align: center;
+            padding: 30px;
+            margin-top: 50px;
+            background: rgba(0,0,0,0.2);
+            border-radius: 20px;
         }
 
-        @keyframes slideIn {
-            from {
-                opacity: 0;
-                transform: translateX(-50px);
-            }
-            to {
-                opacity: 1;
-                transform: translateX(0);
-            }
+        .btn {
+            display: inline-block;
+            background: linear-gradient(45deg, #FF6B6B, #4ECDC4);
+            color: white;
+            padding: 12px 30px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: bold;
+            margin-top: 20px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 7px 20px rgba(0,0,0,0.3);
+        }
+
+        @media (max-width: 768px) {
+            h1 { font-size: 2.5rem; }
+            .subtitle { font-size: 1.2rem; }
+            .content { grid-template-columns: 1fr; }
         }
     </style>
 </head>
 <body>
-    <div class="floating-shapes">
-        <div class="shape"></div>
-        <div class="shape"></div>
-        <div class="shape"></div>
+    <div class="floating-containers">
+        <div class="docker-container" style="left: 10%; animation-delay: 0s;" data-name="Nginx"></div>
+        <div class="docker-container" style="left: 30%; animation-delay: 5s;" data-name="Redis"></div>
+        <div class="docker-container" style="left: 50%; animation-delay: 10s;" data-name="MySQL"></div>
+        <div class="docker-container" style="left: 70%; animation-delay: 15s;" data-name="Node.js"></div>
+        <div class="docker-container" style="left: 90%; animation-delay: 20s;" data-name="Python"></div>
     </div>
 
     <div class="container">
         <header>
-            <div class="logo">🐳</div>
-            <h1>Docker</h1>
-            <p class="tagline">Build, Ship, and Run Anywhere</p>
+            <h1>Docker Magic</h1>
+            <p class="subtitle">Containerize Your World</p>
+            <div class="creator">Created by Sridhar</div>
         </header>
 
-        <div class="content-grid">
-            <div class="card">
-                <div class="icon">📦</div>
-                <h2>Containers</h2>
-                <p>Docker packages applications and their dependencies into lightweight, portable containers that can run consistently across any environment.</p>
+        <main>
+            <div class="content">
+                <div class="card">
+                    <div class="docker-icon">🐳</div>
+                    <h2>What is Docker?</h2>
+                    <p>Docker is an open platform for developing, shipping, and running applications in containers. Containers package up code and all its dependencies so the application runs quickly and reliably from one computing environment to another.</p>
+                </div>
+
+                <div class="card">
+                    <div class="docker-icon">🚢</div>
+                    <h2>Why Use Docker?</h2>
+                    <p>Docker enables you to separate your applications from your infrastructure so you can deliver software quickly. With Docker, you can manage your infrastructure in the same ways you manage your applications.</p>
+                </div>
+
+                <div class="card">
+                    <div class="docker-icon">🔧</div>
+                    <h2>Key Benefits</h2>
+                    <p>Faster delivery of your applications, responsive deployment and scaling, running more workloads on the same hardware, and simplified migration between environments.</p>
+                </div>
             </div>
 
-            <div class="card">
-                <div class="icon">🚀</div>
-                <h2>Fast Deployment</h2>
-                <p>Deploy applications in seconds instead of hours. Docker containers start instantly and use minimal resources compared to virtual machines.</p>
+            <div class="features">
+                <div class="feature">
+                    <div class="feature-icon">⚡</div>
+                    <h3>Lightweight</h3>
+                    <p>Containers share the host OS kernel</p>
+                </div>
+                <div class="feature">
+                    <div class="feature-icon">🔄</div>
+                    <h3>Portable</h3>
+                    <p>Run anywhere consistently</p>
+                </div>
+                <div class="feature">
+                    <div class="feature-icon">📦</div>
+                    <h3>Scalable</h3>
+                    <p>Easily scale services up or down</p>
+                </div>
+                <div class="feature">
+                    <div class="feature-icon">🔒</div>
+                    <h3>Secure</h3>
+                    <p>Isolated application environments</p>
+                </div>
             </div>
 
-            <div class="card">
-                <div class="icon">🔧</div>
-                <h2>Easy Management</h2>
-                <p>Simplify your DevOps workflow with Docker's intuitive CLI and powerful orchestration tools like Docker Compose and Kubernetes.</p>
+            <div style="text-align: center;">
+                <a href="https://www.docker.com/" target="_blank" class="btn">Learn More About Docker</a>
             </div>
+        </main>
 
-            <div class="card">
-                <div class="icon">🌍</div>
-                <h2>Platform Independent</h2>
-                <p>Write once, run anywhere. Docker containers work seamlessly across Windows, Mac, and Linux systems without modification.</p>
-            </div>
-
-            <div class="card">
-                <div class="icon">💡</div>
-                <h2>Microservices</h2>
-                <p>Perfect for building microservices architecture. Each service runs in its own container with isolated dependencies.</p>
-            </div>
-
-            <div class="card">
-                <div class="icon">🔒</div>
-                <h2>Secure & Isolated</h2>
-                <p>Applications run in isolated environments, providing better security and preventing conflicts between different services.</p>
-            </div>
-        </div>
-
-        <div class="features">
-            <h2>Why Developers Love Docker</h2>
-            <div class="feature-list">
-                <div class="feature-item">Version Control</div>
-                <div class="feature-item">Scalability</div>
-                <div class="feature-item">Cost Effective</div>
-                <div class="feature-item">CI/CD Integration</div>
-                <div class="feature-item">Community Support</div>
-                <div class="feature-item">Cloud Ready</div>
-                <div class="feature-item">Resource Efficient</div>
-                <div class="feature-item">Rapid Testing</div>
-            </div>
-        </div>
+        <footer>
+            <p>Created with ❤️ by Sridhar | Docker Animation Showcase</p>
+            <p>© 2023 All rights reserved</p>
+        </footer>
     </div>
 
-    <div class="credit">Created by Sridhar</div>
+    <script>
+        // Add interactive elements
+        document.addEventListener('DOMContentLoaded', function() {
+            // Animate cards on scroll
+            const cards = document.querySelectorAll('.card');
+            const observer = new IntersectionObserver(entries => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.animation = 'fadeIn 1s ease-out forwards';
+                    }
+                });
+            });
+
+            cards.forEach(card => {
+                observer.observe(card);
+            });
+
+            // Add click interaction to floating containers
+            const containers = document.querySelectorAll('.docker-container');
+            containers.forEach(container => {
+                container.addEventListener('click', function() {
+                    this.style.animation = 'none';
+                    setTimeout(() => {
+                        this.style.animation = '';
+                    }, 10);
+                });
+            });
+        });
+    </script>
 </body>
 </html>
